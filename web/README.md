@@ -12,13 +12,13 @@ cd /path/to/research_writing_agent
 .venv/bin/python run_api.py
 ```
 
-`run_api.py` fixes `sys.path` so imports work when you are **inside** the package checkout. Running `python -m uvicorn research_writing_agent.server:app` only works if your current directory is the **parent** of that folder (so Python can import the `research_writing_agent` package).
+`run_api.py` fixes `sys.path` so imports work when you are **inside** the package checkout. Running `python -m uvicorn server:app` only works if your current directory is the **parent** of that folder (so Python can import the `research_writing_agent` package).
 
 **Alternative** (from the parent of `research_writing_agent`, e.g. `LangGraph/`):
 
 ```bash
 cd /path/to/parent/of/research_writing_agent
-./research_writing_agent/.venv/bin/python -m uvicorn research_writing_agent.server:app --host 127.0.0.1 --port 8000
+./research_writing_agent/.venv/bin/python -m uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 
 ```bash

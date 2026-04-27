@@ -49,7 +49,7 @@ type PhaseRow = {
 const API_OFFLINE_HINT =
   "No API on port 8000. From this repo root run: `python run_api.py` (uses the correct " +
   "import path). Or from the parent of `research_writing_agent`: " +
-  "`python -m uvicorn research_writing_agent.server:app --host 127.0.0.1 --port 8000`.";
+  "`python -m uvicorn server:app --host 127.0.0.1 --port 8000`.";
 
 function isRecord(x: unknown): x is Record<string, unknown> {
   return typeof x === "object" && x !== null && !Array.isArray(x);
