@@ -112,43 +112,43 @@ def generate_and_place_images(state: State) -> dict:
     md = state.get("md_with_placeholders") or state["merged_md"]
     image_specs = state.get("image_specs", []) or []
 
-    out_dir = _output_dir()
-    out_dir.mkdir(parents=True, exist_ok=True)
-    md_filename = f"{_safe_slug(plan.blog_title)}.md"
-    md_path = out_dir / md_filename
+    # out_dir = _output_dir()
+    # out_dir.mkdir(parents=True, exist_ok=True)
+    # md_filename = f"{_safe_slug(plan.blog_title)}.md"
+    # md_path = out_dir / md_filename
 
     if not image_specs:
-        md_path.write_text(md, encoding="utf-8")
-        return {"final": md, "markdown_path": str(md_path.resolve())}
+        # md_path.write_text(md, encoding="utf-8")
+        return {"final": md, "markdown_path": None}
 
-    images_dir = out_dir / "images"
-    images_dir.mkdir(parents=True, exist_ok=True)
+    # images_dir = out_dir / "images"
+    # images_dir.mkdir(parents=True, exist_ok=True)
 
     for spec in image_specs:
         placeholder = spec["placeholder"]
         filename = spec["filename"]
-        out_path = images_dir / filename
+        # out_path = images_dir / filename
 
-        if not out_path.exists():
-            try:
-                img_bytes = _gemini_generate_image_bytes(spec["prompt"])
-                out_path.write_bytes(img_bytes)
-            except Exception as e:
-                prompt_block = (
-                    f"> **[IMAGE GENERATION FAILED]** {spec.get('caption', '')}\n>\n"
-                    f"> **Alt:** {spec.get('alt', '')}\n>\n"
-                    f"> **Prompt:** {spec.get('prompt', '')}\n>\n"
-                    f"> **Error:** {e}\n"
-                )
-                md = md.replace(placeholder, prompt_block)
-                continue
+        # if not out_path.exists():
+        try:
+            img_bytes = _gemini_generate_image_bytes(spec["prompt"])
+            # out_path.write_bytes(img_bytes)
+        except Exception as e:
+            prompt_block = (
+                f"> **[IMAGE GENERATION FAILED]** {spec.get('caption', '')}\n>\n"
+                f"> **Alt:** {spec.get('alt', '')}\n>\n"
+                f"> **Prompt:** {spec.get('prompt', '')}\n>\n"
+                f"> **Error:** {e}\n"
+            )
+            md = md.replace(placeholder, prompt_block)
+            continue
 
         # Relative to md_path so previews (VS Code, Jupyter Markdown, etc.) resolve like the notebook.
         img_md = f"![{spec['alt']}](images/{filename})\n*{spec['caption']}*"
         md = md.replace(placeholder, img_md)
 
-    md_path.write_text(md, encoding="utf-8")
-    return {"final": md, "markdown_path": str(md_path.resolve())}
+    # md_path.write_text(md, encoding="utf-8")
+    return {"final": md, "markdown_path": None}
 
 
 reducer_graph = StateGraph(State)
