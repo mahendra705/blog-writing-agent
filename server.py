@@ -15,8 +15,8 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from research_writing_agent.config import _output_dir
-from research_writing_agent.runner import run, stream_run_events
+from config import _output_dir
+from runner import run, stream_run_events
 
 logger = logging.getLogger(__name__)
 

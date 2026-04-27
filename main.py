@@ -1,13 +1,12 @@
 import sys
 from pathlib import Path
 
-# ``python main.py`` does not put the package's parent on ``sys.path`` by default.
-# Insert the directory that *contains* the ``research_writing_agent`` package folder.
-_repo_root = Path(__file__).resolve().parent.parent
+# Ensure the current directory is on sys.path.
+_repo_root = Path(__file__).resolve().parent
 if str(_repo_root) not in sys.path:
     sys.path.insert(0, str(_repo_root))
 
-from research_writing_agent import run
+from __init__ import run
 
 out = run(
 """

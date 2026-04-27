@@ -1,7 +1,7 @@
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from research_writing_agent.llm import _get_chat_model
-from research_writing_agent.schemas import EvidenceItem, Plan, Task
+from llm import _get_chat_model
+from schemas import EvidenceItem, Plan, Task
 
 WORKER_SYSTEM = """You are a senior technical writer and developer advocate.
 Write ONE section of a technical blog post in Markdown.

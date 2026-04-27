@@ -1,8 +1,8 @@
 import re
 from typing import Any
 
-from research_writing_agent.schemas import EvidenceItem, Plan, Task
-from research_writing_agent.state import State
+from schemas import EvidenceItem, Plan, Task
+from state import State
 
 
 def _as_plan(plan: Plan | dict | None) -> Plan | None:

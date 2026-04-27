@@ -1,3 +1,3 @@
-from research_writing_agent.graph.builder import app, g
+from graph.builder import app, g
 
 __all__ = ["app", "g"]

@@ -4,13 +4,12 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-# Directory that contains the ``research_writing_agent`` package folder must be on ``sys.path``.
+# Add parent directory to sys.path so imports work.
 _pkg_root = Path(__file__).resolve().parent.parent
-_pkg_parent = _pkg_root.parent
-if str(_pkg_parent) not in sys.path:
-    sys.path.insert(0, str(_pkg_parent))
+if str(_pkg_root) not in sys.path:
+    sys.path.insert(0, str(_pkg_root))
 
-from research_writing_agent.server import (  # noqa: E402
+from server import (  # noqa: E402
     OUTPUT_STATIC_MOUNT,
     app,
     rewrite_output_image_markdown,
