@@ -90,7 +90,7 @@ This serves the API at `http://127.0.0.1:8000` (with reload). Equivalent if the 
 ```bash
 cd ..   # parent of research_writing_agent
 export PYTHONPATH=.
-python -m uvicorn research_writing_agent.server:app --host 127.0.0.1 --port 8000 --reload
+python -m uvicorn server:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 ### Web UI + API

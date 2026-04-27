@@ -1,12 +1,12 @@
 from langgraph.graph import END, START, StateGraph
 
-from research_writing_agent.nodes.fanout import fanout
-from research_writing_agent.nodes.orchestrator import orchestrator_node
-from research_writing_agent.nodes.reducer import reducer_subgraph
-from research_writing_agent.nodes.research import research_node
-from research_writing_agent.nodes.router import route_next, router_node
-from research_writing_agent.nodes.worker import worker_node
-from research_writing_agent.state import State
+from nodes.fanout import fanout
+from nodes.orchestrator import orchestrator_node
+from nodes.reducer import reducer_subgraph
+from nodes.research import research_node
+from nodes.router import route_next, router_node
+from nodes.worker import worker_node
+from state import State
 
 g = StateGraph(State)
 g.add_node("router", router_node)

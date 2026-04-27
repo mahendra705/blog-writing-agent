@@ -3,11 +3,11 @@ import os
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.graph import END, START, StateGraph
 
-from research_writing_agent.config import GEMINI_IMAGE_MODEL, _output_dir
-from research_writing_agent.llm import _get_chat_model
-from research_writing_agent.schemas import GlobalImagePlan
-from research_writing_agent.state import State
-from research_writing_agent.utils import _as_plan, _safe_slug
+from config import GEMINI_IMAGE_MODEL, _output_dir
+from llm import _get_chat_model
+from schemas import GlobalImagePlan
+from state import State
+from utils import _as_plan, _safe_slug
 
 
 def merge_content(state: State) -> dict:

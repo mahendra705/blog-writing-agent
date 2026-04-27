@@ -1,6 +1,6 @@
 """Start the FastAPI server from this checkout (any cwd under the repo).
 
-``python -m uvicorn research_writing_agent.server:app`` only works when the
+``python -m uvicorn server:app`` only works when the
 **parent** of the ``research_writing_agent`` folder is on ``sys.path``. This
 script adds that path, then starts uvicorn so you can run:
 
@@ -23,7 +23,7 @@ import uvicorn  # noqa: E402 — after path fix
 
 if __name__ == "__main__":
     uvicorn.run(
-        "research_writing_agent.server:app",
+        "server:app",
         host="127.0.0.1",
         port=8000,
         reload=True,

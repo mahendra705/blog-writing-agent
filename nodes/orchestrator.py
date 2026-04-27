@@ -1,9 +1,9 @@
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from research_writing_agent.llm import _get_chat_model
-from research_writing_agent.schemas import Plan
-from research_writing_agent.state import State
-from research_writing_agent.utils import _evidence_models
+from llm import _get_chat_model
+from schemas import Plan
+from state import State
+from utils import _evidence_models
 
 ORCH_SYSTEM = """You are a senior technical writer and developer advocate.
 Your job is to produce a highly actionable outline for a technical blog post.

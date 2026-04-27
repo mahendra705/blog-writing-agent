@@ -1,6 +1,6 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from research_writing_agent.config import GEMINI_CHAT_MODEL
+from config import GEMINI_CHAT_MODEL
 
 _chat_model: ChatGoogleGenerativeAI | None = None
 

@@ -10,13 +10,13 @@ _pkg_parent = _pkg_root.parent
 if str(_pkg_parent) not in sys.path:
     sys.path.insert(0, str(_pkg_parent))
 
-from research_writing_agent.runner import (  # noqa: E402
+from runner import (  # noqa: E402
     initial_run_inputs,
     merge_graph_chunk,
     stream_run_events,
     summarize_state,
 )
-from research_writing_agent.server import app  # noqa: E402
+from server import app  # noqa: E402
 
 
 class TestRunnerStreamHelpers(unittest.TestCase):
@@ -91,7 +91,7 @@ class TestRunStreamApi(unittest.TestCase):
 
         client = TestClient(app)
         with patch(
-            "research_writing_agent.server.stream_run_events",
+            "server.stream_run_events",
             side_effect=fake_stream,
         ):
             response = client.post("/api/run/stream", json={"query": "hello"})

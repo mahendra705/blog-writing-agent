@@ -1,7 +1,7 @@
 from langgraph.types import Send
 
-from research_writing_agent.state import State
-from research_writing_agent.utils import _as_plan, _default_task_for_topic, _worker_payload_base
+from state import State
+from utils import _as_plan, _default_task_for_topic, _worker_payload_base
 
 
 def fanout(state: State) -> list[Send]:

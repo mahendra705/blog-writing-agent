@@ -1,9 +1,9 @@
-from research_writing_agent.nodes.router import router_node, route_next
-from research_writing_agent.nodes.research import research_node
-from research_writing_agent.nodes.orchestrator import orchestrator_node
-from research_writing_agent.nodes.fanout import fanout
-from research_writing_agent.nodes.worker import worker_node
-from research_writing_agent.nodes.reducer import (
+from nodes.router import router_node, route_next
+from nodes.research import research_node
+from nodes.orchestrator import orchestrator_node
+from nodes.fanout import fanout
+from nodes.worker import worker_node
+from nodes.reducer import (
     merge_content,
     decide_images,
     generate_and_place_images,

@@ -2,10 +2,10 @@ from typing import Any
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from research_writing_agent.llm import _get_chat_model
-from research_writing_agent.schemas import EvidenceItem, EvidencePack
-from research_writing_agent.state import State
-from research_writing_agent.tools.tavily import _tavily_search
+from llm import _get_chat_model
+from schemas import EvidenceItem, EvidencePack
+from state import State
+from tools.tavily import _tavily_search
 
 RESEARCH_SYSTEM = """You are a research synthesizer for technical writing.
 

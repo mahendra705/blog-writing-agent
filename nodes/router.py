@@ -1,8 +1,8 @@
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from research_writing_agent.llm import _get_chat_model
-from research_writing_agent.schemas import RouterDecision
-from research_writing_agent.state import State
+from llm import _get_chat_model
+from schemas import RouterDecision
+from state import State
 
 ROUTER_SYSTEM = """You are a routing module for a technical blog planner.
 

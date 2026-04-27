@@ -10,7 +10,7 @@ _pkg_parent = _pkg_root.parent
 if str(_pkg_parent) not in sys.path:
     sys.path.insert(0, str(_pkg_parent))
 
-from research_writing_agent.server import (  # noqa: E402
+from server import (  # noqa: E402
     OUTPUT_STATIC_MOUNT,
     app,
     rewrite_output_image_markdown,

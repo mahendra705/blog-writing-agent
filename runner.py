@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-from research_writing_agent.graph.builder import app
+from graph.builder import app
 
 
 def initial_run_inputs(topic: str) -> Dict[str, Any]:
