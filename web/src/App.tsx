@@ -51,6 +51,8 @@ const API_OFFLINE_HINT =
   "import path). Or from the parent of `research_writing_agent`: " +
   "`python -m uvicorn server:app --host 127.0.0.1 --port 8000`.";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
 function isRecord(x: unknown): x is Record<string, unknown> {
   return typeof x === "object" && x !== null && !Array.isArray(x);
 }
@@ -103,7 +105,7 @@ export default function App() {
 
     let res: Response;
     try {
-      res = await fetch("/api/run/stream", {
+      res = await fetch(`${API_BASE_URL}/api/run/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: trimmed }),
