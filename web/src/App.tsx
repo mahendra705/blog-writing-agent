@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { pdfFilenameFromTitle } from "./pdfFilename";
 import "./App.css";
@@ -53,6 +53,15 @@ const API_OFFLINE_HINT =
   "`python -m uvicorn server:app --host 127.0.0.1 --port 8000`.";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
+/** Resolve ``/api/...`` to the real API host when the UI is not same-origin (e.g. static site + API). */
+function markdownUrlTransform(url: string): string {
+  const base = API_BASE_URL.replace(/\/$/, "");
+  if (base && url.startsWith("/api/")) {
+    return `${base}${url}`;
+  }
+  return defaultUrlTransform(url);
+}
 
 function isRecord(x: unknown): x is Record<string, unknown> {
   return typeof x === "object" && x !== null && !Array.isArray(x);
@@ -542,6 +551,7 @@ export default function App() {
                       <article className="markdown-body">
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
+                          urlTransform={markdownUrlTransform}
                           components={{
                             img: ({ node: _n, ...props }) => (
                               <img

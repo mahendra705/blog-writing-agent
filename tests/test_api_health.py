@@ -1,6 +1,8 @@
+import os
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
@@ -28,6 +30,18 @@ class TestApiHealth(unittest.TestCase):
         out = rewrite_output_image_markdown(md)
         self.assertIn(f"]({OUTPUT_STATIC_MOUNT}/images/diagram.png)", out)
         self.assertIn(f"]({OUTPUT_STATIC_MOUNT}/images/other.webp)", out)
+
+    def test_rewrite_output_image_markdown_public_origin(self) -> None:
+        md = "![x](images/a.png)"
+        with patch.dict(
+            os.environ,
+            {"BWA_PUBLIC_API_ORIGIN": "https://api.example.com"},
+        ):
+            out = rewrite_output_image_markdown(md)
+        self.assertIn(
+            "](https://api.example.com/api/static-output/images/a.png)",
+            out,
+        )
 
 
 if __name__ == "__main__":

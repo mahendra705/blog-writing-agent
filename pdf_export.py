@@ -17,9 +17,11 @@ _IMG_LINK = re.compile(r"!\[([^\]]*)\]\(([^)]+)\)")
 
 def _resolve_image_path(url: str, out_root: Path) -> Path | None:
     u = url.strip()
-    if u.startswith("/api/static-output/"):
-        rel = u[len("/api/static-output/") :].lstrip("/")
-        p = out_root / rel
+    marker = "/api/static-output/"
+    # Handles ``/api/static-output/...`` and ``https://host/api/static-output/...`` (split deploy).
+    if marker in u:
+        tail = u.split(marker, 1)[1].split("?")[0].split("#")[0]
+        p = out_root / tail
         return p if p.is_file() else None
     if u.startswith("images/") or u.startswith("./images/"):
         rel = u.removeprefix("./")

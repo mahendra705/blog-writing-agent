@@ -34,7 +34,17 @@ def rewrite_output_image_markdown(md: str) -> str:
         rel = match.group(1)
         return f"]({OUTPUT_STATIC_MOUNT}/{rel})"
 
-    return _REL_IMAGE_MD.sub(repl, md)
+    text = _REL_IMAGE_MD.sub(repl, md)
+    # When the SPA is hosted on a different origin than this API (e.g. Render static + web
+    # service), relative ``/api/...`` links resolve to the static host and 404. Optional
+    # absolute prefix fixes streamed markdown and "Copy markdown" output.
+    origin = (os.environ.get("BWA_PUBLIC_API_ORIGIN") or "").strip().rstrip("/")
+    if origin:
+        text = text.replace(
+            "](/api/static-output/",
+            f"]({origin}/api/static-output/",
+        )
+    return text
 
 
 app = FastAPI(title="Research Writing Agent API", version="1.0.0")
