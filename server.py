@@ -11,11 +11,12 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from config import _output_dir
+from pdf_export import markdown_to_pdf_bytes, safe_pdf_filename
 from runner import run, stream_run_events
 
 logger = logging.getLogger(__name__)
@@ -59,6 +60,11 @@ class RunBody(BaseModel):
 class RunResponse(BaseModel):
     final: str
     markdown_path: str | None = None
+
+
+class PdfExportBody(BaseModel):
+    markdown: str = Field(..., min_length=1, max_length=500_000)
+    title: str | None = Field(None, max_length=500)
 
 
 @app.get("/api/health")
@@ -120,6 +126,29 @@ def run_agent_stream(body: RunBody) -> StreamingResponse:
         ndjson_chunks(),
         media_type="application/x-ndjson",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+@app.post("/api/export/pdf")
+def export_pdf(body: PdfExportBody) -> Response:
+    """Vector PDF from the same markdown as the UI (WeasyPrint); embeds local output images."""
+    raw_title = (body.title or "research-report").strip() or "research-report"
+    try:
+        pdf_bytes = markdown_to_pdf_bytes(body.markdown, title=raw_title)
+    except Exception:
+        logger.exception("PDF export failed")
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "PDF generation failed. Ensure system libraries for WeasyPrint are installed "
+                "(on macOS: brew install pango; pip install -r requirements.txt)."
+            ),
+        ) from None
+    fname = safe_pdf_filename(raw_title)
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{fname}"'},
     )
 
 

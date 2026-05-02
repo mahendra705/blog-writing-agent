@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
+from config import clear_output_dir
 from graph.builder import app
 
 
@@ -108,6 +109,7 @@ def stream_run_events(topic: str) -> Iterator[Dict[str, Any]]:
         yield {"event": "error", "message": "Topic must not be empty"}
         return
 
+    clear_output_dir()
     inputs = initial_run_inputs(topic_clean)
     current: Dict[str, Any] = dict(inputs)
     logs: List[str] = []
@@ -174,4 +176,7 @@ def stream_run_events(topic: str) -> Iterator[Dict[str, Any]]:
 
 
 def run(topic: str):
+    t = topic.strip()
+    if t:
+        clear_output_dir()
     return app.invoke(initial_run_inputs(topic))

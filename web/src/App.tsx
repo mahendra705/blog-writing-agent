@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { pdfFilenameFromTitle } from "./pdfFilename";
 import "./App.css";
 
 type RunResponse = {
@@ -88,6 +89,7 @@ export default function App() {
   const [phases, setPhases] = useState<PhaseRow[]>([]);
   const [liveLogs, setLiveLogs] = useState<string[]>([]);
   const [currentNode, setCurrentNode] = useState<string | null>(null);
+  const [pdfExporting, setPdfExporting] = useState(false);
 
   const onSubmitStreaming = useCallback(async () => {
     const trimmed = query.trim();
@@ -204,6 +206,51 @@ export default function App() {
   const planObj = result?.plan;
   const planDict = isRecord(planObj) ? planObj : null;
   const tasksRaw = planDict && Array.isArray(planDict.tasks) ? planDict.tasks : [];
+
+  const onDownloadPdf = useCallback(async () => {
+    if (!result?.final) return;
+    setPdfExporting(true);
+    setError(null);
+    try {
+      const title =
+        planDict && typeof planDict.blog_title === "string"
+          ? planDict.blog_title
+          : "research-report";
+      const res = await fetch(`${API_BASE_URL}/api/export/pdf`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ markdown: result.final, title }),
+      });
+      if (!res.ok) {
+        let detail = `PDF export failed (${res.status})`;
+        try {
+          const data = await res.json();
+          if (isRecord(data) && typeof data.detail === "string") {
+            detail = data.detail;
+          }
+        } catch {
+          /* ignore */
+        }
+        throw new Error(detail);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = pdfFilenameFromTitle(title);
+      a.rel = "noopener";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Could not download PDF. Ensure the API is running and server PDF deps are installed.",
+      );
+    } finally {
+      setPdfExporting(false);
+    }
+  }, [result?.final, planDict]);
 
   return (
     <div className="app">
@@ -482,6 +529,14 @@ export default function App() {
                           onClick={() => void copyMarkdown()}
                         >
                           {copied ? "Copied" : "Copy markdown"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => void onDownloadPdf()}
+                          disabled={pdfExporting}
+                        >
+                          {pdfExporting ? "Building PDF…" : "Download PDF"}
                         </button>
                       </div>
                       <article className="markdown-body">
